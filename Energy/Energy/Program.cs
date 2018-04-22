@@ -22,7 +22,7 @@ namespace Energy
            
             while(string.IsNullOrEmpty(number))
             {
-                Console.WriteLine("Введите № искомого файла elgamaRequest\n");
+                Console.Write("Введите № искомого файла elgamaRequest: ");
                 number = Console.ReadLine();
             }
 
@@ -57,65 +57,58 @@ namespace Energy
                     }                   
                 }               
             }
+
             int rangeCells = (cells.Count)/3;
             //ArrayLists for different electrik cells
             ArrayList cell2 = new ArrayList();
             ArrayList cell6 = new ArrayList();
             ArrayList cell27 = new ArrayList();
+            //ArrayList for sum of different electrik cells
+
+            ArrayList outCell2 = new ArrayList();
+            ArrayList outCell6 = new ArrayList();
+            ArrayList outCell27 = new ArrayList();
 
             //Filling Cell2
             for (var i=0; i<=rangeCells-1;i++)
             {
                 cell2.Add(cells[i]);
             }
-
-            // outCell2 = new float[cell2.Count/3];
-            ArrayList outCell2 = new ArrayList();
-            int el = 3;
-            int elements = el;
-            int num = 0;
-            float sum = 0;
-            while(num <= (cell2.Count) && elements<=cell2.Count)
-            {
-                if (num < elements)
-                {
-                    sum += (float)cell2[num];
-                    num++;
-                }
-                else
-                {
-                    outCell2.Add(sum);
-
-                    elements += el;
-                    //if (elements > cell2.Count)
-                    //    elements = cell2.Count;
-                    sum = 0;
-                }
-            }
-            
-            //float sum = 0;
-            //for (var i=0; i<=cell2.Count;i++)
-            //{
-            //    if(i<elements)
-            //    {
-            //        //Get by 3 elements of array           
-            //        sum += (float)cell2[i];
-            //    }
-
-            //}
+            //Return sum items of array cell2
+            outCell2=SummAllItemsOfArray(cell2);
 
             //Filling Cell6
             for (var i=rangeCells;i<=(rangeCells*2)-1;i++)
             {
                 cell6.Add(cells[i]);
             }
+            //Return sum items of array cell6
+            outCell6 = SummAllItemsOfArray(cell6);
 
             //Filling Cell27
             for (var i=rangeCells*2;i<= (cells.Count)-1;i++)
             {
                 cell27.Add(cells[i]);
             }
+            //Return sum items of array cell2
+            outCell27 = SummAllItemsOfArray(cell27);
 
+            using (StreamWriter sw = new StreamWriter(@"E:\SorceTreeRepositiry\EnergyCount\" + fullNameOfFile + ".txt", false, System.Text.Encoding.Default))
+            {
+                WriteAllDataToTextFile(outCell2, sw);
+
+                WriteAllDataToTextFile(outCell6, sw);
+                WriteAllDataToTextFile(outCell27, sw);
+            }
+            //Function for writing to .txt file
+            void WriteAllDataToTextFile(ArrayList someArray, StreamWriter sw)
+            {
+                for(var i=0; i<=(someArray.Count)-1;i++)
+                {
+                    sw.WriteLine(someArray[i]);
+                }
+                sw.WriteLine("\n");
+            }
             //Settings for finish work with Microsoft Excel
             #region
             //cleanup
@@ -133,15 +126,36 @@ namespace Energy
             //quit and release
             xl.Quit();
             Marshal.ReleaseComObject(xl);
-            #endregion
+            #endregion            
 
-            foreach (var j in cells)
-            {
-                Console.WriteLine(j+"\n");
-            }
-
+            Console.WriteLine("Данные успешно записаны в .txt файл");
             //Delay
             Console.ReadKey();
+
+            //Internal function for summing of Array items
+            ArrayList SummAllItemsOfArray(ArrayList sendArray)
+            {
+                int el = 3;
+                int elements = el;
+                int num = 0;
+                float sum = 0;
+                ArrayList internalArray = new ArrayList();
+                while (num <= (sendArray.Count) && elements <= sendArray.Count)
+                {
+                    if (num < elements)
+                    {
+                        sum += (float)sendArray[num];
+                        num++;
+                    }
+                    else
+                    {
+                        internalArray.Add(sum);
+                        elements += el;
+                        sum = 0;
+                    }
+                }
+                return internalArray;
+            }
         }
     }
 }
