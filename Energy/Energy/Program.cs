@@ -36,11 +36,9 @@ namespace Energy
             int numRows = sheet.UsedRange.Rows.Count; //Rows quantity
             int numColumns = 6;     // quantity of Columns
 
-            //List<string[]> contents = new List<string[]>();
             string[] record=new string [numRows];
             ArrayList cells = new ArrayList();                     
-            int colOfNull = 0;
-
+            
             
             for (int rowIndex = 7; rowIndex <= numRows; rowIndex++)  
             {
@@ -55,9 +53,7 @@ namespace Energy
                             if (isDigit && res!=0)
                             {
                                 cells.Add(res);                                
-                            }
-                        //record[rowIndex-7] = 
-                            
+                            }                           
                     }                   
                 }               
             }
@@ -72,6 +68,41 @@ namespace Energy
             {
                 cell2.Add(cells[i]);
             }
+
+            // outCell2 = new float[cell2.Count/3];
+            ArrayList outCell2 = new ArrayList();
+            int el = 3;
+            int elements = el;
+            int num = 0;
+            float sum = 0;
+            while(num <= (cell2.Count) && elements<=cell2.Count)
+            {
+                if (num < elements)
+                {
+                    sum += (float)cell2[num];
+                    num++;
+                }
+                else
+                {
+                    outCell2.Add(sum);
+
+                    elements += el;
+                    //if (elements > cell2.Count)
+                    //    elements = cell2.Count;
+                    sum = 0;
+                }
+            }
+            
+            //float sum = 0;
+            //for (var i=0; i<=cell2.Count;i++)
+            //{
+            //    if(i<elements)
+            //    {
+            //        //Get by 3 elements of array           
+            //        sum += (float)cell2[i];
+            //    }
+
+            //}
 
             //Filling Cell6
             for (var i=rangeCells;i<=(rangeCells*2)-1;i++)
