@@ -128,7 +128,8 @@ namespace Energy
             Marshal.ReleaseComObject(xl);
             #endregion            
 
-            Console.WriteLine("Данные успешно записаны в .txt файл");
+            Console.WriteLine("Данные успешно записаны в .txt файл!!!");
+            Console.WriteLine("Нажмите любую кнопку для продолжения...");
             //Delay
             Console.ReadKey();
 
